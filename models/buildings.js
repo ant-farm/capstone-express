@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
 const buildingSchema = new mongoose.Schema({
-	property_address: {type: String, required: true},
-	creator_id: {
+	propertyAddress: {type: String, required: true},
+	users: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
-	}
+	}]
 })
 
 

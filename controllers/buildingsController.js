@@ -1,13 +1,12 @@
 const express = require('express')
 const router = express.Router()
-// const superagent = require('superagent');
 const Building = require('../models/buildings.js')
 
 router.post('/', async (req, res, next) => {
-	const property_address = req.body.property_address
+	const propertyAddress = req.body.propertyAddress
 	try {
 		const building = await Building.findOne({
-			property_address: req.body.property_address
+			propertyAddress: req.body.propertyAddress
 		})
 		if(building !== null){
 			req.session.message = 'Building already exists!'
@@ -15,7 +14,7 @@ router.post('/', async (req, res, next) => {
 		}
 		else{
 			const createdBuilding = await Building.create({
-				property_address: property_address
+				propertyAddress: propertyAddress
 			})
 			res.json(createdBuilding)
 
@@ -26,37 +25,36 @@ router.post('/', async (req, res, next) => {
 	}
 })
 
-// // registration / user create route ----
-// router.post('/register', async (req, res, next) => {
-// 	console.log(req.body)
-// 	const username = req.body.username
-// 	try {
-// 		const user = await User.findOne({
-// 			username: username
-// 		})
-// 		if(user !== null) {
-// 			req.session.message = 'Username taken!'
-// 			// res.redirect('/users/register')
-// 		} else{
-// 			const password = req.body.password
-// 			const hashedPassword = bcrypt.hashSync(
-// 				password,
-// 				bcrypt.genSaltSync(10)
-// 			)
-// 			const createdUser = await User.create({
-// 				username: username,
-// 				email: req.body.email,
-// 				password: hashedPassword
-// 			})
-// 			req.session.loggedIn = true
-// 			req.session.userId = createdUser._id
-// 			req.session.username = createdUser.username
-// 			// res.redirect('/')
-// 			res.json(createdUser)
-// 		}
-// 	} catch(err){
-// 		next(err)
+router.post('/search', async (req, res, next) => {
+	const propertyAddress = req.body.propertyAddress
+	try {
+		const building = await Building.findOne({
+			propertyAddress: propertyAddress
+		})
+		if(building){
+			res.json(building)
 
+		} else{
+			req.session.message = 'Building does not exist'
+			res.json('building does not exist')
+		}
+		
+	} catch(err){
+		next(err)
+	}
+})
+
+
+
+router.get('/:id/forum', async (req, res, next) => {
+    try {
+    const oneLocation = await Building.findById(req.params.index);
+
+    }
+    catch (err) {
+        next(err)
+    }
+})
 
 
 module.exports = router

@@ -33,6 +33,9 @@ app.use('/users', userController)
 const buildingController = require('./controllers/buildingsController.js')
 app.use('/building', buildingController)
 
+const postsController = require('./controllers/postsController.js')
+app.use('/posts', postsController)
+
 console.log('none of the controllers worked')
 
 //homepage ----

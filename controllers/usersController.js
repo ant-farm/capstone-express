@@ -2,6 +2,7 @@ const express = require ('express')
 const router = express.Router()
 const User = require('../models/users.js')
 const bcrypt = require('bcryptjs')
+const Building = require('../models/buildings.js')
 
 
 console.log('trying users first')
@@ -13,24 +14,6 @@ router.get('/', (req, res) => {
 })
 // login ----
 
-// router.get('/login', (req, res) => {
-// 	let messageToShow = ''
-// 	if(req.session.message){
-// 		messageToShow = req.session.message
-// 		req.session.message = ''
-// 	}
-
-// })
-
-
-// register -----
-// router.get('/register', (req, res) => {
-// 	let messageToShow = ''
-// 	if(req.session.message){
-// 		messageToShow = req.session.message
-// 		req.session.message = ''
-// 	}
-// })
 
 //create route --------------
 router.post('/login', async (req, res, next) => {
@@ -94,6 +77,24 @@ router.post('/register', async (req, res, next) => {
 	}
 })
 
+// updating building id with user 
+router.put('/:id', async (req, res, next) => {
+    try {
+    	console.log(req.session.userId);
+        
+        
+        const building = await Building.findById(req.params.id).populate("users")
+        console.log(building, ' this is the building ID')
+        building.users.push(req.session.userId)
+        building.save()
+        console.log(building)
+        res.json(building)
+    }
+    catch (err) {
+        next(err)
+    }
+})
+
 // log out route ----------------
 router.get('/logout', async (req, res, next) => {
 	try {
@@ -104,6 +105,17 @@ router.get('/logout', async (req, res, next) => {
 		next(err)
 	}
 })
+
+//update ----
+router.put('/', async (req, res, next) => {
+	try {
+		const findUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
+		res.json(findUser)
+	} catch(err){
+		next(err)
+	}
+})
+
 
 // delete -----
 
