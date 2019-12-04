@@ -48,8 +48,8 @@ router.post('/search', async (req, res, next) => {
 
 router.get('/:id/forum', async (req, res, next) => {
     try {
-    const oneLocation = await Building.findById(req.params.index);
-
+    const allPosts = await Building.findById(req.params.id);
+    res.json(allPosts,  'all posts')
     }
     catch (err) {
         next(err)
