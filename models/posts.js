@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
 const postSchema = new mongoose.Schema({
-	users: [{
+	users: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
-	}],
+	},
 	building: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Building'

@@ -45,6 +45,7 @@ router.post('/search', async (req, res, next) => {
 })
 
 
+// get all posts from building id --------------
 
 router.get('/:id/forum', async (req, res, next) => {
     try {

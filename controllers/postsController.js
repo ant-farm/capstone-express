@@ -11,6 +11,7 @@ router.post('/:id', async (req, res, next) => {
 		const newPost = {
 			text: req.body.text
 		}
+		
 		const createPost = await Post.create(newPost);
 		createPost.users.push(req.session.userId)
 		createPost.save()
