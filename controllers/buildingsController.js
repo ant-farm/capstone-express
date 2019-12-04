@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Building = require('../models/buildings.js')
+const Post = require('../models/posts.js')
 
 router.post('/', async (req, res, next) => {
 	const propertyAddress = req.body.propertyAddress
@@ -45,12 +46,16 @@ router.post('/search', async (req, res, next) => {
 })
 
 
-// get all posts from building id --------------
+// get all posts from building using post id--------------
 
 router.get('/:id/forum', async (req, res, next) => {
     try {
-    const allPosts = await Building.findById(req.params.id);
-    res.json(allPosts,  'all posts')
+    const getPost = await Post.findById(req.params.id);
+
+    const propertyAddress = getPost.building
+    const allPosts = await Post.find({building: propertyAddress})
+
+    res.json(allPosts)
     }
     catch (err) {
         next(err)

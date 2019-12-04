@@ -5,21 +5,21 @@ const Building = require('../models/buildings.js')
 // const User = require('..models/users.js')
 
 
-// create post -----
+// create post with building ID in url -----
 router.post('/:id', async (req, res, next) => {
 	try{
+		console.log(req.body.text)
 		const newPost = {
+			users: req.session.userId,
+			building: req.params.id,
 			text: req.body.text
+
 		}
-		
 		const createPost = await Post.create(newPost);
-		createPost.users.push(req.session.userId)
-		createPost.save()
 		
 		res.json(createPost)
-		console.log(createPost)
 	}catch(err){
-		res.json("err")
+		res.json(err)
 	}	
 })
 

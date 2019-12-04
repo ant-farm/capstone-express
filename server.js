@@ -10,13 +10,13 @@ const PORT = process.env.PORT
 const app = express();
 
 require('./db/db.js')
-app.use(bodyParser.json())
 //middleware----
 app.use(methodOverride('_method'))
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({
 	extended: false
 }))
+app.use(bodyParser.json())
 
 
 app.use(session({
