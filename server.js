@@ -6,7 +6,7 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const PORT = process.env.PORT
-
+const cors = require('cors')
 const app = express();
 
 require('./db/db.js')
@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }))
 app.use(bodyParser.json())
+app.use(cors())
 
 
 app.use(session({

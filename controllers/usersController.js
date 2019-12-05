@@ -3,6 +3,7 @@ const router = express.Router()
 const User = require('../models/users.js')
 const bcrypt = require('bcryptjs')
 const Building = require('../models/buildings.js')
+// const cors = require('cors')
 
 
 
