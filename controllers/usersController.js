@@ -5,18 +5,21 @@ const bcrypt = require('bcryptjs')
 const Building = require('../models/buildings.js')
 
 
-console.log('trying users first')
 
 // index route ---------------
-router.get('/', (req, res) => {
-	// res.render('/index.ejs')
-	res.json('users')
+router.get('/', async (req, res, next) => {
+	try {
+		const users = await User.find()
+	res.json(users)
+	} catch(err){
+		next(err)
+	}
 })
 
-// login ----
 
 
-//create route --------------
+
+//create / login route --------------
 router.post('/login', async (req, res, next) => {
 	try {
 		const foundUsers = await User.find({
@@ -109,12 +112,29 @@ router.get('/logout', async (req, res, next) => {
 
 //update ----
 router.put('/', async (req, res, next) => {
-	try {
-		const findUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
-		res.json(findUser)
-	} catch(err){
-		next(err)
+
+	// requireAuth(req, res, next)
+	if(!req.session.loggedIn) {
+		req.session.message = 'You must be logged in to do that!'
+		res.json('You must be logged in to do that!')
+	} 
+	else{
+		try {
+
+			const newInfoToUpdate = {
+				first_name:	req.body.first_name,
+				last_name: req.body.last_name
+			}
+
+			const updateUser = await User.updateOne({_id:req.session.userId}, newInfoToUpdate)
+
+			const userUpdated = await User.findById(req.session.userId)
+			res.json(userUpdated)
+		} catch(err){
+			next(err)
+		}
 	}
+
 })
 
 
@@ -131,7 +151,6 @@ router.delete('/:id', async (req, res, next) => {
 		next(err)
 	}
 })
-
 
 
 
