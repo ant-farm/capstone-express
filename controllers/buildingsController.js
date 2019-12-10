@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Building = require('../models/buildings.js')
 const Post = require('../models/posts.js')
+const User = require('../models/users.js')
 
 router.post('/', async (req, res, next) => {
 	const propertyAddress = req.body.address
@@ -19,7 +20,13 @@ router.post('/', async (req, res, next) => {
 			const createdBuilding = await Building.create({
 				propertyAddress: propertyAddress
 			})
+			const currentUser = await User.findById(req.session.userId)
+			createdBuilding.users.push(currentUser)
+			createdBuilding.save()
+
 			res.json(createdBuilding)
+
+
 
 		}
 		
