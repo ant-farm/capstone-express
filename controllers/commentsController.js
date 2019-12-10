@@ -44,6 +44,16 @@ router.get('/:id/edit', async (req, res, next) => {
 	}
 })
 
+// Get Comments from post--------
+router.get('/:id', async (req, res, next) => {
+	try {
+		console.log(req.body)
+		const foundComments = await Comment.findById(req.params.id)
+	} catch(err){
+		next(err)
+	}
+})
+
 // update comment ----
 router.put('/:id', async (req, res, next) => {
 	try {

@@ -17,7 +17,13 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }))
 app.use(bodyParser.json())
-app.use(cors())
+
+app.use(cors({
+	origin: ['http://localhost:3000'],
+	credentials: true
+}))
+
+
 
 
 app.use(session({
@@ -40,7 +46,6 @@ app.use('/posts', postsController)
 const commentsController = require('./controllers/commentsController.js')
 app.use('/comments', commentsController)
 
-console.log('none of the controllers worked')
 
 //homepage ----
 

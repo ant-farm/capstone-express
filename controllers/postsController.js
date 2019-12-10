@@ -4,7 +4,15 @@ const Post = require('../models/posts.js')
 const Building = require('../models/buildings.js')
 // const User = require('..models/users.js')
 
-
+// get all posts
+router.get('/:id', async (req, res, next) => {
+	try {
+		console.log(req.body)
+		const foundPosts = await Post.findById(req.params.id)
+	} catch(err){
+		next(err)
+	}
+})
 // create post with building ID in url -----
 router.post('/:id', async (req, res, next) => {
 	try{

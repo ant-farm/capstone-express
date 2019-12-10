@@ -4,12 +4,14 @@ const Building = require('../models/buildings.js')
 const Post = require('../models/posts.js')
 
 router.post('/', async (req, res, next) => {
-	const propertyAddress = req.body.propertyAddress
+	const propertyAddress = req.body.address
 	try {
 		const building = await Building.findOne({
-			propertyAddress: req.body.propertyAddress
+			propertyAddress: propertyAddress
 		})
-		if(building !== null){
+		console.log("\nbuilding in post /buildings");
+		console.log(building);
+		if(building !== null) {
 			req.session.message = 'Building already exists!'
 			res.json('Building already exists')
 		}
@@ -27,7 +29,7 @@ router.post('/', async (req, res, next) => {
 })
 
 router.post('/search', async (req, res, next) => {
-	const propertyAddress = req.body.propertyAddress
+	const propertyAddress = req.body.address
 	try {
 		const building = await Building.findOne({
 			propertyAddress: propertyAddress

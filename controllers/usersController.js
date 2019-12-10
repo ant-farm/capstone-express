@@ -37,7 +37,9 @@ router.post('/login', async (req, res, next) => {
 				req.session.userId = foundUsers[0]._id
 				req.session.username = foundUsers[0].username
 				// res.redirect('/')
-				res.json('logged in successfully')
+				res.status(201).json({
+					data: foundUsers
+				})
 			} else{
 				req.session.message = 'Invalid username or password'
 				// res.redirect('/users/login')
@@ -57,7 +59,9 @@ router.post('/register', async (req, res, next) => {
 		const user = await User.findOne({
 			username: username
 		})
+		console.log(user)
 		if(user !== null) {
+			console.log("username taken")
 			req.session.message = 'Username taken!'
 			// res.redirect('/users/register')
 		} else{
@@ -75,7 +79,15 @@ router.post('/register', async (req, res, next) => {
 			req.session.userId = createdUser._id
 			req.session.username = createdUser.username
 			// res.redirect('/')
-			res.json(createdUser)
+			console.log("createdUser")
+			console.log(createdUser)
+			const data = {
+				data: createdUser,
+				status: {
+					code: 201
+				}
+			}
+			res.json(data)
 		}
 	} catch(err){
 		next(err)
