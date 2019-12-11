@@ -7,8 +7,9 @@ const Building = require('../models/buildings.js')
 // get all posts
 router.get('/:id', async (req, res, next) => {
 	try {
-		console.log(req.body)
-		const foundPosts = await Post.findById(req.params.id)
+		console.log(req.params)
+		const foundPosts = await Post.find().where({building: req.params.id})
+		res.json(foundPosts)
 	} catch(err){
 		next(err)
 	}
@@ -45,13 +46,17 @@ router.get('/:id/edit', async (req, res, next) => {
 // update post ----
 router.put('/:postId', async (req, res, next) => {
 	try {
-		const updatedPost = {
+		console.log('this is the postId', req.params.postId);
+		console.log('this is req.body', req.body);
+		const body = {
 			text: req.body.text
 		}
-		const postToUpdate = await Post.findByIdAndUpdate(req.params.postId, updatedPost);
+		const postToUpdate = await Post.findByIdAndUpdate(req.params.postId, body);
 		postToUpdate.save()
-		console.log(postToUpdate) 
-		res.json(postToUpdate)
+
+		const updatedPost = await Post.findById(req.params.postId)
+		console.log('this is the updated POst',postToUpdate) 
+		res.json(updatedPost)
 	} catch(err){
 		next(err)
 	}

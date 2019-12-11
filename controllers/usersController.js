@@ -107,7 +107,7 @@ router.put('/:id', async (req, res, next) => {
         building.users.push(req.session.userId)
         await building.save()
 
-        const currentUser = await User.findById(req.params.id)
+        const currentUser = await User.findById(req.session.userId)
         currentUser.building = building
         await currentUser.save()
      
