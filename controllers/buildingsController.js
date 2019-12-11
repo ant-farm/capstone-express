@@ -10,8 +10,7 @@ router.post('/', async (req, res, next) => {
 		const building = await Building.findOne({
 			propertyAddress: propertyAddress
 		})
-		console.log("\nbuilding in post /buildings");
-		console.log(building);
+
 		if(building !== null) {
 			req.session.message = 'Building already exists!'
 			res.json('Building already exists')
@@ -22,9 +21,13 @@ router.post('/', async (req, res, next) => {
 			})
 			const currentUser = await User.findById(req.session.userId)
 			createdBuilding.users.push(currentUser)
-			createdBuilding.save()
+			await createdBuilding.save()
 
-			res.json(createdBuilding)
+			currentUser.building = createdBuilding
+			
+			await currentUser.save()
+
+			res.json({createdBuilding: createdBuilding, user: currentUser})
 
 
 
@@ -34,6 +37,9 @@ router.post('/', async (req, res, next) => {
 		next(err)
 	}
 })
+
+
+
 
 router.post('/search', async (req, res, next) => {
 	const propertyAddress = req.body.address

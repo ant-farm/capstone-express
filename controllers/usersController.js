@@ -37,8 +37,10 @@ router.post('/login', async (req, res, next) => {
 				req.session.userId = foundUsers[0]._id
 				req.session.username = foundUsers[0].username
 				// res.redirect('/')
+
+			
 				res.status(201).json({
-					data: foundUsers
+					data: foundUsers,
 				})
 			} else{
 				req.session.message = 'Invalid username or password'
@@ -100,10 +102,16 @@ router.put('/:id', async (req, res, next) => {
     	console.log(req.session.userId);
         
         
-        const building = await Building.findById(req.params.id).populate("users")
-        console.log(building, ' this is the building ID')
+        const building = await Building.findById(req.params.id)
+        console.log(building, ' this is the building')
         building.users.push(req.session.userId)
-        building.save()
+        await building.save()
+
+        const currentUser = await User.findById(req.params.id)
+        currentUser.building = building
+        await currentUser.save()
+     
+
         console.log(building)
         res.json(building)
     }

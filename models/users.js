@@ -5,11 +5,15 @@ const userSchema = new mongoose.Schema({
 	first_name: {type: String},
 	last_name: {type: String},
 	email: {type: String, required: true},
-	password: {type: String, required: true}
+	password: {type: String, required: true},
 	// message_id: [{
 	// 	type: mongoose.Schema.Types.ObjectId,
 	// 	ref: 'Message'
 	// }]
+	building: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Building'
+	}
 })
 
 const User = mongoose.model('User', userSchema)
